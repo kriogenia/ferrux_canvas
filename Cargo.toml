@@ -1,0 +1,17 @@
+[package]
+name = "ferrux_canvas"
+description = "Abstraction tool to ease the use of the Pixels buffer"
+version = "0.1.0"
+authors = ["Soto Estévez <ricardo@sotoestevez.dev>"]
+edition = "2021"
+readme = "README.md"
+
+[features]
+optimize = ["log/release_max_level_warn"]
+default = ["optimize"]
+
+[dependencies]
+bresenham = "0.1.1"
+env_logger = "0.9"
+log = "0.4"
+pixels = "0.9"
