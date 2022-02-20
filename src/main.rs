@@ -1,3 +1,3 @@
 fn main() {
-    println!("FerruX starting");
+	println!("FerruX starting");
 }
