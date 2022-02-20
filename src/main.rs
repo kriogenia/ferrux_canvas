@@ -20,7 +20,7 @@ fn main() {
 			.unwrap()
 	};
 
-	//let canvas = Canvas::new(&window);
+	let mut canvas = Canvas::new(&window).unwrap();
 
 	event_loop.run(move |event, _, control_flow| {
 		match event {
@@ -36,6 +36,7 @@ fn main() {
 			}
 			Event::RedrawRequested(_) => {
 				info!("Render canvas");
+				canvas.render().unwrap();
 			}
 			_ => (),
 		}

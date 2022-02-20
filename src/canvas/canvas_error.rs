@@ -5,12 +5,15 @@ use std::fmt::{Debug, Display, Formatter, Result as FmtResult};
 pub enum CanvasError {
 	/// No GPU adapter has been found to run the pixel buffer
 	AdapterNotFound,
+	/// Error triggered during a render
+	Rendering,
 }
 
 impl CanvasError {
 	fn message(&self) -> &str {
 		match self {
 			Self::AdapterNotFound => "GPU adapter not found",
+			Self::Rendering => "Rendering has failed",
 		}
 	}
 }

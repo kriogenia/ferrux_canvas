@@ -1,4 +1,4 @@
-use log::info;
+use log::{error, info};
 use pixels::{Pixels, SurfaceTexture};
 use winit::window::Window;
 use crate::canvas::canvas_error::CanvasError;
@@ -7,12 +7,12 @@ use crate::canvas::canvas_error::CanvasError;
 pub struct Canvas {
 	pixels: Pixels,
 	canvas: Vec<Vec<Pixel>>,
-	width: usize,
-	height: usize,
+	width: u32,
+	height: u32,
 }
 
 impl Canvas {
-	
+
 	/// Returns a new canvas
 	///
 	/// # Arguments
@@ -21,12 +21,19 @@ impl Canvas {
 	/// # Errors
 	/// If no adapter for the GPU is found a [CanvasError::AdapterNotFound] is thrown
 	///
+	/// # Example
+	/// ```no_run
+	/// let mut events_loop = winit::event_loop::EventLoop::new();
+	/// let window = winit::window::Window::new(&events_loop).unwrap();
+	/// let mut canvas = ferrux_canvas::canvas::Canvas::new(&window).unwrap();
+	/// ```
+	///
 	pub fn new(window: &Window) -> Result<Self, CanvasError> {
 		info!("Starting FerruX Canvas");
-		
+
 		let window_size = window.inner_size();
-		let width = window_size.width as usize;
-		let height = window_size.height as usize;
+		let width = window_size.width;
+		let height = window_size.height;
 		info!("[Ferrux Canvas] Width: {}. Height: {}", &width, &height);
 
 		info!("[Ferrux Canvas] Creating pixel buffer");
@@ -45,20 +52,58 @@ impl Canvas {
 		})
 	}
 
-	/// Width of the screen
-	pub fn width(&self) -> usize {
+	/// Width of the screen, matches the window width
+	///
+	/// ```
+	/// let window = winit::window::Window::new(&winit::event_loop::EventLoop::new()).unwrap();
+	/// let mut canvas = ferrux_canvas::canvas::Canvas::new(&window).unwrap();
+	///
+	/// assert_eq!(window.inner_size().width, canvas.width());
+	/// ```
+	///
+	pub fn width(&self) -> u32 {
 		self.width
 	}
 
-	/// Height of the screen
-	pub fn height(&self) -> usize {
+	/// Height of the screen, matches the window height
+	///
+	/// ```
+	/// let window = winit::window::Window::new(&winit::event_loop::EventLoop::new()).unwrap();
+	/// let mut canvas = ferrux_canvas::canvas::Canvas::new(&window).unwrap();
+	///
+	/// assert_eq!(window.inner_size().height, canvas.height());
+	/// ```
+	///
+	pub fn height(&self) -> u32 {
 		self.height
 	}
-	
+
+	/// Renders the current canvas in the screen and clears it to
+	///
+	/// # Errors
+	/// [CanvasError::Rendering] if something goes wrong
+	///
+	pub fn render(&mut self) -> Result<(), CanvasError> {
+		for (i, pixel) in self.pixels.get_frame().chunks_exact_mut(4).enumerate() {
+			match self.canvas[i % self.width as usize][i / self.width as usize] {
+				Pixel::White => pixel.copy_from_slice(&[0xff, 0xff, 0xff, 0xff]),
+				Pixel::Blank => pixel.copy_from_slice(&[0x00, 0x00, 0x00, 0x00])
+			}
+		}
+
+		//self.clear();
+
+		self.pixels.render().map_err(|e| {
+			error!("pixels.render() failed: {:?}", e);
+			CanvasError::Rendering
+		})
+	}
+
 }
 
 #[derive(Clone, Copy)]
 enum Pixel {
 	Blank,
+	#[allow(dead_code)]
 	White,
 }
