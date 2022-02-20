@@ -21,6 +21,7 @@ fn main() {
 	};
 
 	let mut canvas = Canvas::new(&window).unwrap();
+	canvas.draw_pixel(200, 200);
 
 	event_loop.run(move |event, _, control_flow| {
 		match event {

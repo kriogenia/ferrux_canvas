@@ -99,11 +99,17 @@ impl Canvas {
 		})
 	}
 
+	/// Draws a single pixel on the buffer, ready to be printed in the next [Canvas::render] call.
+	pub fn draw_pixel(&mut self, x: u32, y: u32) {
+		if x < self.width && y < self.height {
+			self.canvas[x as usize][y as usize] = Pixel::White;
+		}
+	}
+
 }
 
 #[derive(Clone, Copy)]
 enum Pixel {
 	Blank,
-	#[allow(dead_code)]
 	White,
 }
