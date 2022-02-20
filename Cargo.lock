@@ -356,7 +356,7 @@ dependencies = [
 
 [[package]]
 name = "ferrux_canvas"
-version = "0.2.0"
+version = "0.1.0"
 dependencies = [
  "bresenham",
  "env_logger",

@@ -3,8 +3,8 @@
 # FerruX Canvas
 
 Ferrux Canvas is an abstraction layer over the [Pixels](https://crates.io/crates/pixels) crate. It manages the pixel
-buffer exposing simple operations to draw in the screen. In its current state it only works with 
-[Winit](https://crates.io/crates/winit).
+buffer exposing simple operations to draw pixels, lines and figures of one color in the screen. In its current state 
+it only works with [Winit](https://crates.io/crates/winit).
 
 The list of current goals is listed in the repository's [project](https://github.com/kriogenia/ferrux_canvas/projects/1).
 
