@@ -1,2 +1,4 @@
+pub use canvas::Canvas;
+
 mod canvas;
-mod canvas_error;
+pub mod canvas_error;
