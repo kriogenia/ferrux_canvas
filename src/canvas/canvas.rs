@@ -3,7 +3,7 @@ use log::{error, info};
 use pixels::{Pixels, SurfaceTexture};
 use winit::window::Window;
 use crate::canvas::canvas_error::CanvasError;
-use crate::Point;
+use crate::canvas::Point;
 
 /// Canvas to manage what is drawn in the screen
 pub struct Canvas {
@@ -157,7 +157,7 @@ impl Canvas {
 	/// * `end` - Ending point
 	///
 	/// # Example
-	/// The line between the pixes (100, 100) and (200, 200) will be drawn on the screen with the next
+	/// The line between the pixels (100, 100) and (200, 200) will be drawn on the screen with the next
 	/// render call.
 	/// ```no_run
 	/// # let window = winit::window::Window::new(&winit::event_loop::EventLoop::new()).unwrap();
@@ -170,6 +170,26 @@ impl Canvas {
 			(start.0 as isize, start.1 as isize), (end.0 as isize, end.1 as isize)) {
 			self.draw_pixel(x as u32, y as u32);
 		}
+	}
+
+	/// Draws the three lines compounding a triangle in the canvas
+	///
+	/// # Arguments
+	/// `triangle` - 2D Triangle to draw
+	///
+	/// # Example
+	/// The triangle between the pixels (100, 100), (100, 150) and (150, 100) will be drawn on the
+	/// screen with the next render call.
+	/// ```no_run
+	/// # let window = winit::window::Window::new(&winit::event_loop::EventLoop::new()).unwrap();
+	/// # let mut canvas = ferrux_canvas::canvas::Canvas::new(&window).unwrap();
+	/// canvas.draw_triangle((100, 100), (100, 150), (150, 100));
+	/// ```
+	///
+	pub fn draw_triangle(&mut self, point_a: Point, point_b: Point, point_c: Point) {
+		self.draw_line(point_a, point_b);
+		self.draw_line(point_b, point_c);
+		self.draw_line(point_c, point_a);
 	}
 
 }

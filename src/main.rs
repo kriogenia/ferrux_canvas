@@ -21,7 +21,11 @@ fn main() {
 	};
 
 	let mut canvas = Canvas::new(&window).unwrap();
-	canvas.draw_line((200, 200), (400, 300));
+
+	canvas.draw_pixel(175, 75);
+	canvas.draw_pixel(125, 75);
+	canvas.draw_line((150, 50), (150, 250));
+	canvas.draw_triangle((100, 100), (150, 150), (200, 100));
 
 	event_loop.run(move |event, _, control_flow| {
 		match event {
