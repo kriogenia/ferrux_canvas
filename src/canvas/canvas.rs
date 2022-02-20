@@ -54,7 +54,7 @@ impl Canvas {
 
 	/// Width of the screen, matches the window width
 	///
-	/// ```
+	/// ```no_run
 	/// let window = winit::window::Window::new(&winit::event_loop::EventLoop::new()).unwrap();
 	/// let mut canvas = ferrux_canvas::canvas::Canvas::new(&window).unwrap();
 	///
@@ -67,7 +67,7 @@ impl Canvas {
 
 	/// Height of the screen, matches the window height
 	///
-	/// ```
+	/// ```no_run
 	/// let window = winit::window::Window::new(&winit::event_loop::EventLoop::new()).unwrap();
 	/// let mut canvas = ferrux_canvas::canvas::Canvas::new(&window).unwrap();
 	///
