@@ -1,3 +1,5 @@
+[![Rust](https://github.com/kriogenia/ferrux_canvas/actions/workflows/rust.yml/badge.svg?branch=main)](https://github.com/kriogenia/ferrux_canvas/actions/workflows/rust.yml)
+
 # FerruX Canvas
 
 Ferrux Canvas is an abstraction layer over the [Pixels](https://crates.io/crates/pixels) crate. It manages the pixel

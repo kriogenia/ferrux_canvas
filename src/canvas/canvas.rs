@@ -1,7 +1,9 @@
+use bresenham::Bresenham;
 use log::{error, info};
 use pixels::{Pixels, SurfaceTexture};
 use winit::window::Window;
 use crate::canvas::canvas_error::CanvasError;
+use crate::Point;
 
 /// Canvas to manage what is drawn in the screen
 pub struct Canvas {
@@ -103,6 +105,19 @@ impl Canvas {
 	pub fn draw_pixel(&mut self, x: u32, y: u32) {
 		if x < self.width && y < self.height {
 			self.canvas[x as usize][y as usize] = Pixel::White;
+		}
+	}
+
+	/// Draws a line between the two specified points in the canvas
+	///
+	/// # Arguments
+	/// * `start` - Starting point
+	/// * `end` - Ending point
+	///
+	pub fn draw_line(&mut self, start: Point, end: Point) {
+		for (x, y) in Bresenham::new(
+			(start.0 as isize, start.1 as isize), (end.0 as isize, end.1 as isize)) {
+			self.draw_pixel(x as u32, y as u32);
 		}
 	}
 
