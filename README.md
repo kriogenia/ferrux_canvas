@@ -56,3 +56,16 @@ The FerruX Canvas is a tool developed while creating the FerruXengine, an attemp
 make. I made this canvas to ease the use of the *Pixels* buffer used by the engine. As the tool proved useful for 
 other possible future projects I was thinking of, and a couple of mutuals of mine thought that they could use it too, 
 it was decided to extract it as its own library.
+
+## License
+
+Licensed, at your option, under either of:
+
+* Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE))
+* MIT license ([LICENSE-MIT](LICENSE-MIT))
+
+## Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in the work by you, as defined in the Apache-2.0 license, shall be
+dual licensed as above, without any additional terms or conditions.
