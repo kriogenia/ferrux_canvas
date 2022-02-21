@@ -1,6 +1,6 @@
-//! Tools of the library to work with [Winit](https://crates.io/crates/winit)
+//! Tools of the library to work with [winit]
 
-use std::fmt::{Debug, Formatter, Pointer};
+use std::fmt::{Debug, Formatter};
 use bresenham::Bresenham;
 use log::{error, info};
 use pixels::{Pixels, SurfaceTexture};
@@ -9,7 +9,7 @@ use crate::canvas::canvas_error::CanvasError;
 use crate::canvas::pixel::Pixel;
 use crate::canvas::{Canvas, Point};
 
-/// Canvas to use with a **Window** of the [Winit](https://crates.io/crates/winit) crate
+/// Canvas to use with a [winit::window::Window]
 pub struct WinitCanvas {
 	pixels: Pixels,
 	canvas: Vec<Vec<Pixel>>,
@@ -18,10 +18,11 @@ pub struct WinitCanvas {
 }
 
 impl WinitCanvas {
-	/// Returns a new canvas
+
+	/// Returns a new Winit canvas
 	///
 	/// # Arguments
-	/// * `window` - Borrowed winit [Window] to draw on
+	/// * `window` - Borrowed [Window] to draw on
 	///
 	/// # Errors
 	/// If no adapter for the GPU is found a [CanvasError::AdapterNotFound] is thrown
@@ -73,7 +74,7 @@ impl Canvas for WinitCanvas {
 		self.height
 	}
 
-	/// Renders the current canvas in the screen and clears it to
+	/// Renders the current canvas in the screen
 	///
 	/// # Example
 	/// The best way to use it is inside a new event loop thread when the redraw requested is
@@ -145,6 +146,13 @@ impl Canvas for WinitCanvas {
 
 	fn reset_frame(&mut self) {
 		self.canvas = vec![vec![Pixel::Background; self.height as usize]; self.width as usize];
+	}
+
+	fn resize(&mut self, width: u32, height: u32) {
+		self.width = width;
+		self.height = height;
+		self.reset_frame();
+		self.pixels.resize_surface(width, height);
 	}
 
 }

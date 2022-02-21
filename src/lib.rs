@@ -8,7 +8,6 @@
 //!
 //! ```no_run
 //! # fn main() -> Result<(), Box<dyn std::error::Error>> {
-//!
 //! let event_loop = winit::event_loop::EventLoop::new();
 //! let window = winit::window::Window::new(&event_loop)?;
 //! let canvas = ferrux_canvas::canvas::winit::WinitCanvas::new(&window)?;
@@ -26,6 +25,7 @@
 //! ```no_run
 //! use ferrux_canvas::canvas::Canvas;
 //! use winit::event::Event;
+//!
 //! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! # let event_loop = winit::event_loop::EventLoop::new();
 //! # let window = winit::window::Window::new(&event_loop)?;
@@ -43,7 +43,8 @@
 //!         incrementing = !incrementing;
 //!       }
 //!       x += if incrementing { 1 } else { -1 };
-//!       canvas.draw_triangle((100, (100 - x) as u32), (100 - x as u32, 100), (200 - x as u32, 200 - x as u32));
+//!       canvas.draw_triangle((100, (100 - x) as u32), (100 - x as u32, 100),
+//!                            (200 - x as u32, 200 - x as u32));
 //!       canvas.render().unwrap();
 //!       canvas.reset_frame();
 //!     }
