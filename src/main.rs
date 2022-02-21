@@ -1,5 +1,3 @@
-use std::thread::sleep;
-use std::time::Duration;
 use log::info;
 use winit::dpi::LogicalSize;
 use winit::event::{Event, WindowEvent};
@@ -25,10 +23,8 @@ fn main() {
 
 	let mut canvas = WinitCanvas::new(&window).unwrap();
 
-	canvas.draw_pixel(175, 75);
-	canvas.draw_pixel(125, 75);
-	canvas.draw_line((150, 50), (150, 250));
-	canvas.draw_triangle((100, 100), (150, 150), (200, 100));
+	let mut x: i32 = 1;
+	let mut incrementing = true;
 
 	event_loop.run(move |event, _, control_flow| {
 		match event {
@@ -43,15 +39,15 @@ fn main() {
 				window.request_redraw();
 			}
 			Event::RedrawRequested(_) => {
-				info!("Render canvas");
+				if !(1..100).contains(&x) {
+					incrementing = !incrementing;
+				}
+				x += if incrementing { 1 } else { -1 };
+
+				canvas.draw_triangle((100, (100 - x) as u32), (100 - x as u32, 100),
+				                     (200 - x as u32, 200 - x as u32));
 				canvas.render().unwrap();
-				sleep(Duration::new(2, 0));
-				canvas.clear_frame().unwrap();
-				sleep(Duration::new(2, 0));
 				canvas.reset_frame();
-				canvas.draw_line((100, 100), (300, 300));
-				canvas.draw_line((100, 300), (300, 100));
-				canvas.render().unwrap();
 			}
 			_ => (),
 		}
