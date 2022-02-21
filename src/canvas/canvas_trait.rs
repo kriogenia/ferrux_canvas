@@ -1,6 +1,8 @@
 use crate::canvas::canvas_error::CanvasError;
 use crate::canvas::Point;
 
+/// Entity managing the screen rendering and providing the tools to perform the drawing of the
+/// the figures and invoke the frame rendering.
 pub trait Canvas {
 
 	/// Width of the canvas screen

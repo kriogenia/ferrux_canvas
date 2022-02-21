@@ -1,7 +1,8 @@
+//! Throwable errors of the API
 use std::error::Error;
 use std::fmt::{Debug, Display, Formatter, Result as FmtResult};
 
-/// Errors than can occur using a [Canvas]
+/// Errors than can occur using a **Canvas**
 pub enum CanvasError {
 	/// No GPU adapter has been found to run the pixel buffer
 	AdapterNotFound,

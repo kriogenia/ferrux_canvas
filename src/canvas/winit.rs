@@ -1,3 +1,5 @@
+//! Tools of the library to work with **winit**
+
 use bresenham::Bresenham;
 use log::{error, info};
 use pixels::{Pixels, SurfaceTexture};
@@ -6,7 +8,7 @@ use crate::canvas::canvas_error::CanvasError;
 use crate::canvas::pixel::Pixel;
 use crate::canvas::{Canvas, Point};
 
-/// Canvas to manage what is drawn in the screen
+/// Canvas to use with a **Window** of the **winit** crate
 pub struct WinitCanvas {
 	pixels: Pixels,
 	canvas: Vec<Vec<Pixel>>,

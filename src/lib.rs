@@ -62,6 +62,7 @@
 //! [`Window`]: winit::window::Window
 //! [`EventLoop`]: winit::event_loop::EventLoop
 //!
+
 pub mod canvas;
 
 extern crate winit;

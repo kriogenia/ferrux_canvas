@@ -1,3 +1,5 @@
+//! The Canvas trait and all its implementations
+
 pub use canvas_trait::Canvas;
 
 pub mod winit;
