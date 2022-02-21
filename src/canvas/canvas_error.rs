@@ -31,3 +31,20 @@ impl Display for CanvasError {
 		write!(f, "{}", self.message())
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use crate::canvas::canvas_error::CanvasError;
+
+	#[test]
+	fn test_send() {
+		fn assert_send<T: Send>() {}
+		assert_send::<CanvasError>();
+	}
+
+	#[test]
+	fn test_sync() {
+		fn assert_sync<T: Sync>() {}
+		assert_sync::<CanvasError>();
+	}
+}

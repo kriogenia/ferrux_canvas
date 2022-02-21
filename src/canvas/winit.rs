@@ -84,15 +84,15 @@ impl Canvas for WinitCanvas {
 	/// # let window = winit::window::Window::new(&event_loop).unwrap();
 	/// # let mut canvas = ferrux_canvas::canvas::winit::WinitCanvas::new(&window).unwrap();
 	/// event_loop.run(move |event, _, _| {
-	/// 		match event {
-	/// 			Event::MainEventsCleared => {
-	/// 				window.request_redraw();
-	/// 			}
-	/// 			Event::RedrawRequested(_) => {
-	/// 				canvas.render().unwrap();
-	/// 			}
-	/// 			_ => (),
-	/// 		}
+	///   match event {
+	///     Event::MainEventsCleared => {
+	///       window.request_redraw();
+	///     }
+	///     Event::RedrawRequested(_) => {
+	///       canvas.render().unwrap();
+	///     }
+	///     _ => (),
+	///  }
 	/// });
 	/// ```
 	///
