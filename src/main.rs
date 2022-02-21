@@ -1,3 +1,5 @@
+use std::thread::sleep;
+use std::time::Duration;
 use log::info;
 use winit::dpi::LogicalSize;
 use winit::event::{Event, WindowEvent};
@@ -41,6 +43,11 @@ fn main() {
 			}
 			Event::RedrawRequested(_) => {
 				info!("Render canvas");
+				canvas.render().unwrap();
+				sleep(Duration::new(2, 0));
+				canvas.reset_frame();
+				canvas.draw_line((100, 100), (300, 300));
+				canvas.draw_line((100, 300), (300, 100));
 				canvas.render().unwrap();
 			}
 			_ => (),

@@ -126,8 +126,6 @@ impl Canvas {
 			}
 		}
 
-		//self.clear();
-
 		self.pixels.render().map_err(|e| {
 			error!("pixels.render() failed: {:?}", e);
 			CanvasError::Rendering
@@ -192,9 +190,25 @@ impl Canvas {
 		self.draw_line(point_c, point_a);
 	}
 
+	/// Clears the current buffer, allowing to draw a completely new frame without the previous data
+	///
+	/// # Example
+	///
+	/// ```
+	/// # let window = winit::window::Window::new(&winit::event_loop::EventLoop::new()).unwrap();
+	/// # let mut canvas = ferrux_canvas::canvas::Canvas::new(&window).unwrap();
+	/// canvas.draw_pixel(150, 100);
+	/// canvas.render();    // This would render the pixel on the screen
+	/// canvas.reset_frame();
+	/// canvas.render();    // This would render an empty frame
+	/// ```
+	pub fn reset_frame(&mut self) {
+		self.canvas = vec![vec![Pixel::Blank; self.height as usize]; self.width as usize];
+	}
+
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 enum Pixel {
 	Blank,
 	White,
