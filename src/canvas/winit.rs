@@ -1,5 +1,6 @@
 //! Tools of the library to work with [Winit](https://crates.io/crates/winit)
 
+use std::fmt::{Debug, Formatter, Pointer};
 use bresenham::Bresenham;
 use log::{error, info};
 use pixels::{Pixels, SurfaceTexture};
@@ -146,4 +147,13 @@ impl Canvas for WinitCanvas {
 		self.canvas = vec![vec![Pixel::Background; self.height as usize]; self.width as usize];
 	}
 
+}
+
+impl Debug for WinitCanvas {
+	fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+		write!(f, "[WinitCanvas]\
+		Width: {},\
+		Height: {},\
+		Current canvas: {:?}", self.width, self.height, self.canvas)
+	}
 }
