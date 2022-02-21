@@ -1,3 +1,5 @@
+![Crates.io](https://img.shields.io/crates/v/ferrux_canvas)
+![docs.rs](https://img.shields.io/docsrs/ferrux_canvas)
 [![Rust](https://github.com/kriogenia/ferrux_canvas/actions/workflows/rust.yml/badge.svg?branch=main)](https://github.com/kriogenia/ferrux_canvas/actions/workflows/rust.yml)
 
 # FerruX Canvas
