@@ -1,7 +1,10 @@
+//! Throwable errors of the API
 use std::error::Error;
 use std::fmt::{Debug, Display, Formatter, Result as FmtResult};
 
-/// Errors than can occur using a [Canvas]
+/// Errors than can occur using a [`Canvas`]
+///
+/// [`Canvas`]: ../trait.Canvas.html
 pub enum CanvasError {
 	/// No GPU adapter has been found to run the pixel buffer
 	AdapterNotFound,
@@ -29,5 +32,22 @@ impl Debug for CanvasError {
 impl Display for CanvasError {
 	fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
 		write!(f, "{}", self.message())
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use crate::canvas::canvas_error::CanvasError;
+
+	#[test]
+	fn test_send() {
+		fn assert_send<T: Send>() {}
+		assert_send::<CanvasError>();
+	}
+
+	#[test]
+	fn test_sync() {
+		fn assert_sync<T: Sync>() {}
+		assert_sync::<CanvasError>();
 	}
 }

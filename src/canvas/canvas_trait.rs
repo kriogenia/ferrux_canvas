@@ -1,6 +1,8 @@
 use crate::canvas::canvas_error::CanvasError;
 use crate::canvas::Point;
 
+/// Entity managing the screen rendering and providing the tools to perform the drawing of the
+/// the figures and invoke the frame rendering.
 pub trait Canvas {
 
 	/// Width of the canvas screen
@@ -33,7 +35,10 @@ pub trait Canvas {
 	///
 	fn height(&self) -> u32;
 
-	/// Renders the current frame in the screen
+	/// Renders the current frame in the screen.
+	/// See implementations like [super::winit::WinitCanvas::render] to get more information on each
+	/// particular use case.
+	///
 	fn render(&mut self) -> Result<(), CanvasError>;
 
 	/// Draws a single pixel on the buffer, ready to be printed in the next [Canvas::render] call.
@@ -118,5 +123,22 @@ pub trait Canvas {
 	/// canvas.render();    // This would render an empty frame
 	/// ```
 	fn reset_frame(&mut self);
+
+	/// Resizes the canvas to a new size. The current frame is lost doing it.
+	///
+	/// # Arguments
+	/// * `size` - New size for the canvas
+	///
+	/// # Example
+	/// ```no_run
+	/// # use ferrux_canvas::canvas::Canvas;
+	/// # let window = winit::window::Window::new(&winit::event_loop::EventLoop::new()).unwrap();
+	/// # let mut canvas = ferrux_canvas::canvas::winit::WinitCanvas::new(&window).unwrap();
+	/// canvas.resize(640, 480);
+	/// assert_eq!(640, canvas.width());
+	/// assert_eq!(480, canvas.height());
+	/// ```
+	///
+	fn resize(&mut self, width: u32, height: u32);
 
 }

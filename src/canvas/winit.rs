@@ -1,3 +1,6 @@
+//! Tools of the library to work with [winit]
+
+use std::fmt::{Debug, Formatter};
 use bresenham::Bresenham;
 use log::{error, info};
 use pixels::{Pixels, SurfaceTexture};
@@ -6,7 +9,7 @@ use crate::canvas::canvas_error::CanvasError;
 use crate::canvas::pixel::Pixel;
 use crate::canvas::{Canvas, Point};
 
-/// Canvas to manage what is drawn in the screen
+/// Canvas to use with a [winit::window::Window]
 pub struct WinitCanvas {
 	pixels: Pixels,
 	canvas: Vec<Vec<Pixel>>,
@@ -15,10 +18,11 @@ pub struct WinitCanvas {
 }
 
 impl WinitCanvas {
-	/// Returns a new canvas
+
+	/// Returns a new Winit canvas
 	///
 	/// # Arguments
-	/// * `window` - Borrowed winit [Window] to draw on
+	/// * `window` - Borrowed [Window] to draw on
 	///
 	/// # Errors
 	/// If no adapter for the GPU is found a [CanvasError::AdapterNotFound] is thrown
@@ -70,7 +74,7 @@ impl Canvas for WinitCanvas {
 		self.height
 	}
 
-	/// Renders the current canvas in the screen and clears it to
+	/// Renders the current canvas in the screen
 	///
 	/// # Example
 	/// The best way to use it is inside a new event loop thread when the redraw requested is
@@ -84,15 +88,15 @@ impl Canvas for WinitCanvas {
 	/// # let window = winit::window::Window::new(&event_loop).unwrap();
 	/// # let mut canvas = ferrux_canvas::canvas::winit::WinitCanvas::new(&window).unwrap();
 	/// event_loop.run(move |event, _, _| {
-	/// 		match event {
-	/// 			Event::MainEventsCleared => {
-	/// 				window.request_redraw();
-	/// 			}
-	/// 			Event::RedrawRequested(_) => {
-	/// 				canvas.render().unwrap();
-	/// 			}
-	/// 			_ => (),
-	/// 		}
+	///   match event {
+	///     Event::MainEventsCleared => {
+	///       window.request_redraw();
+	///     }
+	///     Event::RedrawRequested(_) => {
+	///       canvas.render().unwrap();
+	///     }
+	///     _ => (),
+	///  }
 	/// });
 	/// ```
 	///
@@ -144,4 +148,20 @@ impl Canvas for WinitCanvas {
 		self.canvas = vec![vec![Pixel::Background; self.height as usize]; self.width as usize];
 	}
 
+	fn resize(&mut self, width: u32, height: u32) {
+		self.width = width;
+		self.height = height;
+		self.reset_frame();
+		self.pixels.resize_surface(width, height);
+	}
+
+}
+
+impl Debug for WinitCanvas {
+	fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+		write!(f, "[WinitCanvas]\
+		Width: {},\
+		Height: {},\
+		Current canvas: {:?}", self.width, self.height, self.canvas)
+	}
 }
