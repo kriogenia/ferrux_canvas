@@ -2,6 +2,7 @@ pub use canvas::Canvas;
 
 mod canvas;
 pub mod canvas_error;
+mod pixel;
 
 /// Tuple of two **u32** values representing a drawable point
 ///

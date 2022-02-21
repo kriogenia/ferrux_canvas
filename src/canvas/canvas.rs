@@ -3,6 +3,7 @@ use log::{error, info};
 use pixels::{Pixels, SurfaceTexture};
 use winit::window::Window;
 use crate::canvas::canvas_error::CanvasError;
+use crate::canvas::pixel::Pixel;
 use crate::canvas::Point;
 
 /// Canvas to manage what is drawn in the screen
@@ -52,7 +53,7 @@ impl Canvas {
 
 		Ok(Self {
 			pixels,
-			canvas: vec![vec![Pixel::Blank; height as usize]; width as usize],
+			canvas: vec![vec![Pixel::Background; height as usize]; width as usize],
 			width,
 			height,
 		})
@@ -116,14 +117,11 @@ impl Canvas {
 	/// ```
 	///
 	/// # Errors
-	/// [CanvasError::Rendering] if something goes wrong
+	/// [CanvasError::Rendering] if something goes wrong loading the current texture
 	///
 	pub fn render(&mut self) -> Result<(), CanvasError> {
 		for (i, pixel) in self.pixels.get_frame().chunks_exact_mut(4).enumerate() {
-			match self.canvas[i % self.width as usize][i / self.width as usize] {
-				Pixel::White => pixel.copy_from_slice(&[0xff, 0xff, 0xff, 0xff]),
-				Pixel::Blank => pixel.copy_from_slice(&[0x00, 0x00, 0x00, 0x00])
-			}
+			pixel.copy_from_slice(self.canvas[i % self.width as usize][i / self.width as usize].color());
 		}
 
 		self.pixels.render().map_err(|e| {
@@ -144,7 +142,7 @@ impl Canvas {
 	///
 	pub fn draw_pixel(&mut self, x: u32, y: u32) {
 		if x < self.width && y < self.height {
-			self.canvas[x as usize][y as usize] = Pixel::White;
+			self.canvas[x as usize][y as usize] = Pixel::Foreground;
 		}
 	}
 
@@ -190,26 +188,48 @@ impl Canvas {
 		self.draw_line(point_c, point_a);
 	}
 
+	/// Renders an empty frame. It mimics a call to [Canvas::render] after a [Canvas::reset_frame] but
+	/// it doesn't clear the buffer. Allowing to clear the screen without losing the current drawn
+	/// image
+	///
+	/// # Example
+	/// ```no_run
+	/// # use std::time::Duration;
+	/// # let window = winit::window::Window::new(&winit::event_loop::EventLoop::new()).unwrap();
+	/// # let mut canvas = ferrux_canvas::canvas::Canvas::new(&window).unwrap();
+	/// canvas.draw_pixel(150, 100);
+	/// canvas.render();      // This would render the pixel on the screen
+	/// std::thread::sleep(Duration::new(2, 0));
+	/// canvas.clear_frame(); // This would render a blank screen but the buffer is kept
+	/// std::thread::sleep(Duration::new(2, 0));
+	/// canvas.render();      // The pixel would be rendered again with this call
+	/// ```
+	///
+	pub fn clear_frame(&mut self) -> Result<(), CanvasError> {
+		for pixel in self.pixels.get_frame().chunks_exact_mut(4) {
+			pixel.copy_from_slice(Pixel::Background.color());
+		}
+
+		self.pixels.render().map_err(|e| {
+			error!("pixels.render() failed: {:?}", e);
+			CanvasError::Rendering
+		})
+	}
+
 	/// Clears the current buffer, allowing to draw a completely new frame without the previous data
 	///
 	/// # Example
-	///
-	/// ```
+	/// ```no_run
 	/// # let window = winit::window::Window::new(&winit::event_loop::EventLoop::new()).unwrap();
 	/// # let mut canvas = ferrux_canvas::canvas::Canvas::new(&window).unwrap();
 	/// canvas.draw_pixel(150, 100);
 	/// canvas.render();    // This would render the pixel on the screen
+	/// std::thread::sleep(std::time::Duration::new(2, 0));
 	/// canvas.reset_frame();
 	/// canvas.render();    // This would render an empty frame
 	/// ```
 	pub fn reset_frame(&mut self) {
-		self.canvas = vec![vec![Pixel::Blank; self.height as usize]; self.width as usize];
+		self.canvas = vec![vec![Pixel::Background; self.height as usize]; self.width as usize];
 	}
 
-}
-
-#[derive(Clone, Copy, Debug, PartialEq)]
-enum Pixel {
-	Blank,
-	White,
 }

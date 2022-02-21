@@ -45,6 +45,8 @@ fn main() {
 				info!("Render canvas");
 				canvas.render().unwrap();
 				sleep(Duration::new(2, 0));
+				canvas.clear_frame().unwrap();
+				sleep(Duration::new(2, 0));
 				canvas.reset_frame();
 				canvas.draw_line((100, 100), (300, 300));
 				canvas.draw_line((100, 300), (300, 100));
