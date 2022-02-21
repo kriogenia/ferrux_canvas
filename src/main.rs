@@ -6,6 +6,7 @@ use winit::event::{Event, WindowEvent};
 use winit::event_loop::{ControlFlow, EventLoop};
 use winit::window::WindowBuilder;
 use ferrux_canvas::canvas::Canvas;
+use ferrux_canvas::canvas::winit::WinitCanvas;
 
 fn main() {
 	println!("FerruX Canvas demo");
@@ -22,7 +23,7 @@ fn main() {
 			.unwrap()
 	};
 
-	let mut canvas = Canvas::new(&window).unwrap();
+	let mut canvas = WinitCanvas::new(&window).unwrap();
 
 	canvas.draw_pixel(175, 75);
 	canvas.draw_pixel(125, 75);
