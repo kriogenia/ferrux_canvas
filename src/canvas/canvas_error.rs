@@ -2,7 +2,9 @@
 use std::error::Error;
 use std::fmt::{Debug, Display, Formatter, Result as FmtResult};
 
-/// Errors than can occur using a **Canvas**
+/// Errors than can occur using a [`Canvas`]
+///
+/// [`Canvas`]: ../trait.Canvas.html
 pub enum CanvasError {
 	/// No GPU adapter has been found to run the pixel buffer
 	AdapterNotFound,

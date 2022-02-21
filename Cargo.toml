@@ -4,7 +4,12 @@ description = "Abstraction tool to ease the use of the Pixels buffer"
 version = "0.1.0"
 authors = ["Soto Estévez <ricardo@sotoestevez.dev>"]
 edition = "2021"
-readme = "README.md"
+readme = "./README.md"
+repository = "https://github.com/kriogenia/ferrux_canvas"
+license = "GPL-3.0-or-later"
+license-file = "./LICENSE"
+keywords = [ "canvas", "pixels", "graphics" ]
+categories = [ "graphics" ]
 
 [features]
 optimize = ["log/release_max_level_warn"]
