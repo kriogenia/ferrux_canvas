@@ -1439,6 +1439,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "winit_example"
+version = "0.1.0"
+dependencies = [
+ "ferrux_canvas",
+ "winit",
+]
+
+[[package]]
 name = "x11-dl"
 version = "2.19.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"

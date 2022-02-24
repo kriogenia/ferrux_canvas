@@ -6,13 +6,13 @@ use log::{error, info};
 use pixels::{Pixels, SurfaceTexture};
 use winit::window::Window;
 use crate::canvas::canvas_error::CanvasError;
-use crate::canvas::pixel::Pixel;
 use crate::canvas::{Canvas, Point};
+use crate::color::Color;
 
 /// Canvas to use with a [winit::window::Window]
 pub struct WinitCanvas {
 	pixels: Pixels,
-	canvas: Vec<Vec<Pixel>>,
+	canvas: Vec<Vec<Color>>,
 	width: u32,
 	height: u32,
 }
@@ -57,7 +57,7 @@ impl WinitCanvas {
 
 		Ok(Self {
 			pixels,
-			canvas: vec![vec![Pixel::Background; height as usize]; width as usize],
+			canvas: vec![vec![Color::from_rgba("ffffffff").unwrap(); height as usize]; width as usize],
 			width,
 			height,
 		})
@@ -105,7 +105,7 @@ impl Canvas for WinitCanvas {
 	///
 	fn render(&mut self) -> Result<(), CanvasError> {
 		for (i, pixel) in self.pixels.get_frame().chunks_exact_mut(4).enumerate() {
-			pixel.copy_from_slice(self.canvas[i % self.width as usize][i / self.width as usize].color());
+			pixel.copy_from_slice(&self.canvas[i % self.width as usize][i / self.width as usize].as_u8());
 		}
 
 		self.pixels.render().map_err(|e| {
@@ -116,7 +116,7 @@ impl Canvas for WinitCanvas {
 
 	fn draw_pixel(&mut self, x: u32, y: u32) {
 		if x < self.width && y < self.height {
-			self.canvas[x as usize][y as usize] = Pixel::Foreground;
+			self.canvas[x as usize][y as usize] = Color::from_rgba("ff000022").unwrap();
 		}
 	}
 
@@ -135,7 +135,7 @@ impl Canvas for WinitCanvas {
 
 	fn clear_frame(&mut self) -> Result<(), CanvasError> {
 		for pixel in self.pixels.get_frame().chunks_exact_mut(4) {
-			pixel.copy_from_slice(Pixel::Background.color());
+			pixel.copy_from_slice(&Color::from_rgba("00000000").unwrap().as_u8());
 		}
 
 		self.pixels.render().map_err(|e| {
@@ -145,7 +145,8 @@ impl Canvas for WinitCanvas {
 	}
 
 	fn reset_frame(&mut self) {
-		self.canvas = vec![vec![Pixel::Background; self.height as usize]; self.width as usize];
+		self.canvas = vec![vec![Color::from_rgba("ffffffff").unwrap(); self.height as usize];
+		                   self.width as usize];
 	}
 
 	fn resize(&mut self, width: u32, height: u32) {

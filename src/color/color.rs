@@ -5,21 +5,20 @@ use crate::color::color_error::ColorError::InvalidSyntax;
 /// Representation of a color to use in the canvas based on RGBA
 #[derive(Debug, PartialEq)]
 pub struct Color {
-	r: u8,
-	g: u8,
-	b: u8,
-	a: u8
+	pub r: u8,
+	pub g: u8,
+	pub b: u8,
+	pub a: u8
 }
 
 impl Color {
 
 	/// Create a color from a RGBA hexadecimal representation. The syntax should be of type 'hhhhhhhh'
 	/// without the # (intended to be supported on future versions).
-	fn from_rgba(rgba: &str) -> Result<Color, ColorError> {
+	pub fn from_rgba(rgba: &str) -> Result<Color, ColorError> {
 		match Regex::new(r"([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})").unwrap()
 			.captures(rgba) {
 			Some(caps) => {
-				println!("{:?}", caps);
 				if caps.len() != 5 {
 					Err(InvalidSyntax("hhhhhhhh"))
 				} else {
@@ -34,6 +33,21 @@ impl Color {
 		}
 	}
 
+	pub fn as_u8(&self) -> [u8; 4] {
+		[self.r, self.g, self.b, self.a]
+	}
+
+}
+
+impl Clone for Color {
+	fn clone(&self) -> Self {
+		Self {
+			r: self.r,
+			g: self.g,
+			b: self.b,
+			a: self.a
+		}
+	}
 }
 
 #[cfg(test)]
