@@ -7,7 +7,7 @@ use pixels::{Pixels, SurfaceTexture};
 use winit::window::Window;
 use crate::canvas::canvas_error::CanvasError;
 use crate::canvas::{Canvas, Point};
-use crate::color::Color;
+use crate::color::{Color, Palette};
 
 /// Canvas to use with a [winit::window::Window]
 pub struct WinitCanvas {
@@ -57,7 +57,7 @@ impl WinitCanvas {
 
 		Ok(Self {
 			pixels,
-			canvas: vec![vec![Color::from_rgba("ffffffff").unwrap(); height as usize]; width as usize],
+			canvas: vec![vec![Palette::BLACK(); height as usize]; width as usize],
 			width,
 			height,
 		})
@@ -116,7 +116,7 @@ impl Canvas for WinitCanvas {
 
 	fn draw_pixel(&mut self, x: u32, y: u32) {
 		if x < self.width && y < self.height {
-			self.canvas[x as usize][y as usize] = Color::from_rgba("ff000022").unwrap();
+			self.canvas[x as usize][y as usize] = Palette::WHITE();
 		}
 	}
 
@@ -135,7 +135,7 @@ impl Canvas for WinitCanvas {
 
 	fn clear_frame(&mut self) -> Result<(), CanvasError> {
 		for pixel in self.pixels.get_frame().chunks_exact_mut(4) {
-			pixel.copy_from_slice(&Color::from_rgba("00000000").unwrap().as_u8());
+			pixel.copy_from_slice(&Palette::BLACK().as_u8());
 		}
 
 		self.pixels.render().map_err(|e| {
@@ -145,8 +145,7 @@ impl Canvas for WinitCanvas {
 	}
 
 	fn reset_frame(&mut self) {
-		self.canvas = vec![vec![Color::from_rgba("ffffffff").unwrap(); self.height as usize];
-		                   self.width as usize];
+		self.canvas = vec![vec![Palette::BLACK(); self.height as usize]; self.width as usize];
 	}
 
 	fn resize(&mut self, width: u32, height: u32) {
