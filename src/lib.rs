@@ -65,5 +65,6 @@
 //!
 
 pub mod canvas;
+pub mod color;
 
 extern crate winit;

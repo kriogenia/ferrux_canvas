@@ -362,6 +362,7 @@ dependencies = [
  "env_logger",
  "log",
  "pixels",
+ "regex",
  "winit",
 ]
 
