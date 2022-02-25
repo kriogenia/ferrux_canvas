@@ -6,13 +6,13 @@ use log::{error, info};
 use pixels::{Pixels, SurfaceTexture};
 use winit::window::Window;
 use crate::canvas::canvas_error::CanvasError;
-use crate::canvas::pixel::Pixel;
 use crate::canvas::{Canvas, Point};
+use crate::color::*;
 
 /// Canvas to use with a [winit::window::Window]
 pub struct WinitCanvas {
 	pixels: Pixels,
-	canvas: Vec<Vec<Pixel>>,
+	canvas: Vec<Vec<Color>>,
 	width: u32,
 	height: u32,
 }
@@ -57,7 +57,7 @@ impl WinitCanvas {
 
 		Ok(Self {
 			pixels,
-			canvas: vec![vec![Pixel::Background; height as usize]; width as usize],
+			canvas: vec![vec![palette::BLACK; height as usize]; width as usize],
 			width,
 			height,
 		})
@@ -105,7 +105,7 @@ impl Canvas for WinitCanvas {
 	///
 	fn render(&mut self) -> Result<(), CanvasError> {
 		for (i, pixel) in self.pixels.get_frame().chunks_exact_mut(4).enumerate() {
-			pixel.copy_from_slice(self.canvas[i % self.width as usize][i / self.width as usize].color());
+			pixel.copy_from_slice(&self.canvas[i % self.width as usize][i / self.width as usize].as_u8());
 		}
 
 		self.pixels.render().map_err(|e| {
@@ -114,28 +114,28 @@ impl Canvas for WinitCanvas {
 		})
 	}
 
-	fn draw_pixel(&mut self, x: u32, y: u32) {
+	fn draw_pixel(&mut self, x: u32, y: u32, color: Color) {
 		if x < self.width && y < self.height {
-			self.canvas[x as usize][y as usize] = Pixel::Foreground;
+			self.canvas[x as usize][y as usize] = color;
 		}
 	}
 
-	fn draw_line(&mut self, start: Point, end: Point) {
+	fn draw_line(&mut self, start: Point, end: Point, color: Color) {
 		for (x, y) in Bresenham::new(
 			(start.0 as isize, start.1 as isize), (end.0 as isize, end.1 as isize)) {
-			self.draw_pixel(x as u32, y as u32);
+			self.draw_pixel(x as u32, y as u32, color.clone());
 		}
 	}
 
-	fn draw_triangle(&mut self, point_a: Point, point_b: Point, point_c: Point) {
-		self.draw_line(point_a, point_b);
-		self.draw_line(point_b, point_c);
-		self.draw_line(point_c, point_a);
+	fn draw_triangle(&mut self, point_a: Point, point_b: Point, point_c: Point, color: Color) {
+		self.draw_line(point_a, point_b, color.clone());
+		self.draw_line(point_b, point_c, color.clone());
+		self.draw_line(point_c, point_a, color);
 	}
 
 	fn clear_frame(&mut self) -> Result<(), CanvasError> {
 		for pixel in self.pixels.get_frame().chunks_exact_mut(4) {
-			pixel.copy_from_slice(Pixel::Background.color());
+			pixel.copy_from_slice(&palette::BLACK.as_u8());
 		}
 
 		self.pixels.render().map_err(|e| {
@@ -145,7 +145,7 @@ impl Canvas for WinitCanvas {
 	}
 
 	fn reset_frame(&mut self) {
-		self.canvas = vec![vec![Pixel::Background; self.height as usize]; self.width as usize];
+		self.canvas = vec![vec![palette::BLACK; self.height as usize]; self.width as usize];
 	}
 
 	fn resize(&mut self, width: u32, height: u32) {

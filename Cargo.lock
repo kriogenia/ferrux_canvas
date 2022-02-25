@@ -356,12 +356,13 @@ dependencies = [
 
 [[package]]
 name = "ferrux_canvas"
-version = "0.1.1"
+version = "0.2.0"
 dependencies = [
  "bresenham",
  "env_logger",
  "log",
  "pixels",
+ "regex",
  "winit",
 ]
 
@@ -1435,6 +1436,14 @@ dependencies = [
  "web-sys",
  "winapi",
  "x11-dl",
+]
+
+[[package]]
+name = "winit_example"
+version = "0.1.0"
+dependencies = [
+ "ferrux_canvas",
+ "winit",
 ]
 
 [[package]]

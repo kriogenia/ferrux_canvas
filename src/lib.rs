@@ -24,10 +24,11 @@
 //! The following example takes the [`WinitCanvas`] we built and draws a morphing triangle.
 //! ```no_run
 //! use ferrux_canvas::canvas::Canvas;
+//! use ferrux_canvas::color;
 //! use winit::event::Event;
-//!
 //! # fn main() -> Result<(), Box<dyn std::error::Error>> {
-//! # let event_loop = winit::event_loop::EventLoop::new();
+//! # use ferrux_canvas::color::palette;
+//! let event_loop = winit::event_loop::EventLoop::new();
 //! # let window = winit::window::Window::new(&event_loop)?;
 //! # let mut canvas = ferrux_canvas::canvas::winit::WinitCanvas::new(&window)?;
 //! let mut x: i32 = 1;
@@ -44,7 +45,7 @@
 //!       }
 //!       x += if incrementing { 1 } else { -1 };
 //!       canvas.draw_triangle((100, (100 - x) as u32), (100 - x as u32, 100),
-//!                            (200 - x as u32, 200 - x as u32));
+//!                            (200 - x as u32, 200 - x as u32), palette::WHITE);
 //!       canvas.render().unwrap();
 //!       canvas.reset_frame();
 //!     }
@@ -65,5 +66,6 @@
 //!
 
 pub mod canvas;
+pub mod color;
 
 extern crate winit;

@@ -1,7 +1,7 @@
 [package]
 name = "ferrux_canvas"
 description = "Abstraction tool to ease the use of the Pixels buffer"
-version = "0.1.1"
+version = "0.2.0"
 authors = ["Soto Estévez <ricardo@sotoestevez.dev>"]
 edition = "2021"
 readme = "./README.md"
@@ -27,4 +27,10 @@ bresenham = "0.1.1"
 env_logger = "0.9"
 log = "0.4"
 pixels = "0.9"
+regex = "1.5.4"
 winit = "0.26"
+
+[workspace]
+members = [
+    "examples/*"
+]

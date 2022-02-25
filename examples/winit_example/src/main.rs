@@ -4,6 +4,7 @@ use winit::event_loop::{ControlFlow, EventLoop};
 use winit::window::WindowBuilder;
 use ferrux_canvas::canvas::Canvas;
 use ferrux_canvas::canvas::winit::WinitCanvas;
+use ferrux_canvas::color::{Color, ColorBuilder, palette};
 
 fn main() {
     println!("FerruX Canvas demo");
@@ -42,8 +43,16 @@ fn main() {
                 }
                 x += if incrementing { 1 } else { -1 };
 
-                canvas.draw_triangle((100, (100 - x) as u32), (100 - x as u32, 100),
-                                     (200 - x as u32, 200 - x as u32));
+                canvas.draw_triangle((100, 100 - x as u32), (100 - x as u32, 100),
+                                     (200 - x as u32, 200 - x as u32), palette::WHITE);
+
+                canvas.draw_line((200 - x as u32, 100), (200 - x as u32, 200 - x as u32),
+                                 palette::RED);
+                canvas.draw_line((200 - x as u32, 200 - x as u32), (100, 200 - x as u32),
+                                 Color::from_rgba("00ff00ff").unwrap());
+                canvas.draw_line((100, 200 - x as u32), (200 - x as u32, 100),
+                ColorBuilder::new().with_red(0).with_green(0).with_blue(255).build());
+
                 canvas.render().unwrap();
                 canvas.reset_frame();
             }
