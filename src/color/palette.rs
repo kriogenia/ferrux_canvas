@@ -1,30 +1,42 @@
+//! Collection of basic constants colors to use in the canvas
 use crate::color::Color;
 
-pub struct Palette<'a> {
-	r: &'a str,
-	g: &'a str,
-	b: &'a str,
-	a: &'a str
-}
+/// White color: #ffffff
+pub const WHITE: Color = Color {
+	r: u8::MAX,
+	g: u8::MAX,
+	b: u8::MAX,
+	a: u8::MAX,
+};
 
-impl<'a> Palette<'a> {
+/// Black color: #000000
+pub const BLACK: Color = Color {
+	r: u8::MIN,
+	g: u8::MIN,
+	b: u8::MIN,
+	a: u8::MAX,
+};
 
-	pub fn WHITE() -> Color {
-		Color {
-			r: 255,
-			g: 255,
-			b: 255,
-			a: 255
-		}
-	}
+/// Red color: #ff0000
+pub const RED: Color = Color {
+	r: u8::MAX,
+	g: u8::MIN,
+	b: u8::MIN,
+	a: u8::MAX
+};
 
-	pub fn BLACK() -> Color {
-		Color {
-			r: 0,
-			g: 0,
-			b: 0,
-			a: 255
-		}
-	}
+/// Green color: #00ff00
+pub const GREEN: Color = Color {
+	r: u8::MIN,
+	g: u8::MAX,
+	b: u8::MIN,
+	a: u8::MAX,
+};
 
-}
+/// Blue color: #0000ff
+pub const BLUE: Color = Color {
+	r: u8::MIN,
+	g: u8::MIN,
+	b: u8::MAX,
+	a: u8::MAX,
+};
