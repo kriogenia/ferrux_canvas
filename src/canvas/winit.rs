@@ -114,23 +114,23 @@ impl Canvas for WinitCanvas {
 		})
 	}
 
-	fn draw_pixel(&mut self, x: u32, y: u32) {
+	fn draw_pixel(&mut self, x: u32, y: u32, color: Color) {
 		if x < self.width && y < self.height {
-			self.canvas[x as usize][y as usize] = palette::WHITE;
+			self.canvas[x as usize][y as usize] = color;
 		}
 	}
 
-	fn draw_line(&mut self, start: Point, end: Point) {
+	fn draw_line(&mut self, start: Point, end: Point, color: Color) {
 		for (x, y) in Bresenham::new(
 			(start.0 as isize, start.1 as isize), (end.0 as isize, end.1 as isize)) {
-			self.draw_pixel(x as u32, y as u32);
+			self.draw_pixel(x as u32, y as u32, color.clone());
 		}
 	}
 
-	fn draw_triangle(&mut self, point_a: Point, point_b: Point, point_c: Point) {
-		self.draw_line(point_a, point_b);
-		self.draw_line(point_b, point_c);
-		self.draw_line(point_c, point_a);
+	fn draw_triangle(&mut self, point_a: Point, point_b: Point, point_c: Point, color: Color) {
+		self.draw_line(point_a, point_b, color.clone());
+		self.draw_line(point_b, point_c, color.clone());
+		self.draw_line(point_c, point_a, color);
 	}
 
 	fn clear_frame(&mut self) -> Result<(), CanvasError> {

@@ -23,12 +23,7 @@ impl ColorBuilder {
 
 	/// Creates a new ColorBuilder
 	pub fn new() -> ColorBuilder {
-		ColorBuilder {
-			r: DEFAULT_VALUE,
-			g: DEFAULT_VALUE,
-			b: DEFAULT_VALUE,
-			a: DEFAULT_VALUE,
-		}
+		ColorBuilder::default()
 	}
 
 	/// Sets the RED scale of the color to build
@@ -65,4 +60,15 @@ impl ColorBuilder {
 		}
 	}
 
+}
+
+impl Default for ColorBuilder {
+	fn default() -> Self {
+		ColorBuilder {
+			r: DEFAULT_VALUE,
+			g: DEFAULT_VALUE,
+			b: DEFAULT_VALUE,
+			a: DEFAULT_VALUE,
+		}
+	}
 }
