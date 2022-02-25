@@ -21,9 +21,9 @@ use crate::color::color_error::ColorError::InvalidSyntax;
 /// let green = Color::from_rgba("00ff00ff")?;
 /// let blue = ColorBuilder::new().with_red(0).with_green(0).with_blue(255).build();
 ///
-/// canvas.draw_line((100, 100), (100, 200));
-/// canvas.draw_line((100, 200), (150, 150));
-/// canvas.draw_line((150, 150), (100, 100));
+/// canvas.draw_line((100, 100), (100, 200), red);
+/// canvas.draw_line((100, 200), (150, 150), green);
+/// canvas.draw_line((150, 150), (100, 100), blue);
 /// # Ok(()) }
 /// ```
 ///

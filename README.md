@@ -43,7 +43,8 @@ event_loop.run(move |event, _, control_flow| {
          incrementing = !incrementing;
        }
        x += if incrementing { 1 } else { -1 };
-       canvas.draw_triangle((100, (100 - x) as u32), (100 - x as u32, 100), (200 - x as u32, 200 - x as u32));
+       canvas.draw_triangle((100, (100 - x) as u32), (100 - x as u32, 100), 
+          (200 - x as u32, 200 - x as u32), palette::WHITE);
        canvas.render().unwrap();
        canvas.reset_frame();
      }
