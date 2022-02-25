@@ -1,4 +1,9 @@
-//! Collection of basic constants colors to use in the canvas
+//! Collection of basic constants colors to use in the canvas:
+//! * **White:** [super::palette::WHITE]
+//! * **Black:** [super::palette::BLACK]
+//! * **Red:** [super::palette::RED]
+//! * **Green:** [super::palette::GREEN]
+//! * **Blue:** [super::palette::BLUE]
 use crate::color::Color;
 
 /// White color: #ffffff
