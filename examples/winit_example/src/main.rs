@@ -1,3 +1,5 @@
+use std::thread::sleep;
+use std::time::Duration;
 use winit::dpi::LogicalSize;
 use winit::event::{Event, WindowEvent};
 use winit::event_loop::{ControlFlow, EventLoop};
@@ -53,8 +55,11 @@ fn main() {
                 canvas.draw_line((100, 200 - x as u32), (200 - x as u32, 100),
                 ColorBuilder::new().with_red(0).with_green(0).with_blue(255).build());
 
+                canvas.fill_triangle((250, 250), (200, 300), (300, 300), palette::GREEN);
+
                 canvas.render().unwrap();
                 canvas.reset_frame();
+                sleep(Duration::new(5, 0));
             }
             _ => (),
         }

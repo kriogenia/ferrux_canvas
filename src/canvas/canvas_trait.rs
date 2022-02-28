@@ -93,6 +93,10 @@ pub trait Canvas {
 	///
 	fn draw_triangle(&mut self, point_a: Point, point_b: Point, point_c: Point, color: Color);
 
+
+	// TODO
+	fn fill_triangle(&mut self, point_a: Point, point_b: Point, point_c: Point, color: Color);
+
 	/// Renders an empty frame. It mimics a call to [Canvas::render] after a [Canvas::reset_frame] but
 	/// it doesn't clear the buffer. Allowing to clear the screen without losing the current drawn
 	/// image

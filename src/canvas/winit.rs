@@ -133,6 +133,16 @@ impl Canvas for WinitCanvas {
 		self.draw_line(point_c, point_a, color);
 	}
 
+	fn fill_triangle(&mut self, (x1, y1): Point, (x2, y2): Point, (x3, y3): Point, color: Color) {
+		// get medium point
+		// generate fourth point
+		for (left, right) in Bresenham::new((x1 as isize, y1 as isize), (x2 as isize, y2 as isize))
+			.zip(Bresenham::new((x1 as isize, y1 as isize), (x3 as isize, y3 as isize))) {
+			println!("{:?} - {:?}", left, right);
+			self.draw_line((left.0 as u32, left.1 as u32), (right.0 as u32, right.1 as u32),color.clone());
+		}
+	}
+
 	fn clear_frame(&mut self) -> Result<(), CanvasError> {
 		for pixel in self.pixels.get_frame().chunks_exact_mut(4) {
 			pixel.copy_from_slice(&palette::BLACK.as_u8());
