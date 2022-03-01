@@ -55,7 +55,7 @@ fn main() {
                 canvas.draw_line((100, 200 - x as u32), (200 - x as u32, 100),
                 ColorBuilder::new().with_red(0).with_green(0).with_blue(255).build());
 
-                canvas.fill_triangle((250, 250), (200, 300), (300, 300), palette::GREEN);
+                canvas.fill_triangle((200, 300), (250, 250), (300, 300), palette::GREEN);
 
                 canvas.render().unwrap();
                 canvas.reset_frame();

@@ -7,6 +7,7 @@ use pixels::{Pixels, SurfaceTexture};
 use winit::window::Window;
 use crate::canvas::canvas_error::CanvasError;
 use crate::canvas::{Canvas, Point};
+use crate::canvas::math::sort_vectors;
 use crate::color::*;
 
 /// Canvas to use with a [winit::window::Window]
@@ -133,8 +134,10 @@ impl Canvas for WinitCanvas {
 		self.draw_line(point_c, point_a, color);
 	}
 
-	fn fill_triangle(&mut self, (x1, y1): Point, (x2, y2): Point, (x3, y3): Point, color: Color) {
-		// get medium point
+	fn fill_triangle(&mut self, p1: Point, p2: Point, p3: Point, color: Color) {
+
+		let ((x1, y1), (x2, y2), (x3, y3)) = sort_vectors(p1, p2, p3);
+
 		// generate fourth point
 		for (left, right) in Bresenham::new((x1 as isize, y1 as isize), (x2 as isize, y2 as isize))
 			.zip(Bresenham::new((x1 as isize, y1 as isize), (x3 as isize, y3 as isize))) {
