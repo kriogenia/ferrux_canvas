@@ -7,7 +7,7 @@ use pixels::{Pixels, SurfaceTexture};
 use winit::window::Window;
 use crate::canvas::canvas_error::CanvasError;
 use crate::canvas::{Canvas, Point};
-use crate::canvas::math::sort_vectors;
+use crate::canvas::helpers::{as_isize, as_u32, sort_vectors};
 use crate::color::*;
 
 /// Canvas to use with a [winit::window::Window]
@@ -63,6 +63,16 @@ impl WinitCanvas {
 			height,
 		})
 	}
+
+	/// Fills the flat triangle (a triangle were two points share the same height) made with the three
+	/// passed points using Bresenham
+	fn fill_flat_triangle(&mut self, peak: Point, side_a: Point, side_b: Point, color: Color) {
+		for (left, right) in Bresenham::new(as_isize(peak), as_isize(side_a))
+			.zip(Bresenham::new(as_isize(peak), as_isize(side_b))) {
+			self.draw_line(as_u32(left), as_u32(right), color.clone());
+		}
+	}
+
 }
 
 impl Canvas for WinitCanvas {
@@ -135,14 +145,20 @@ impl Canvas for WinitCanvas {
 	}
 
 	fn fill_triangle(&mut self, p1: Point, p2: Point, p3: Point, color: Color) {
-
-		let ((x1, y1), (x2, y2), (x3, y3)) = sort_vectors(p1, p2, p3);
-
-		// generate fourth point
-		for (left, right) in Bresenham::new((x1 as isize, y1 as isize), (x2 as isize, y2 as isize))
-			.zip(Bresenham::new((x1 as isize, y1 as isize), (x3 as isize, y3 as isize))) {
-			println!("{:?} - {:?}", left, right);
-			self.draw_line((left.0 as u32, left.1 as u32), (right.0 as u32, right.1 as u32),color.clone());
+		let (p1, p2, p3) = sort_vectors(p1, p2, p3);
+		println!("{:?}, {:?}, {:?}", p1, p2, p3);
+		if p1.1 == p2.1 {
+			println!("Pointing up triangle");
+			self.fill_flat_triangle(p3, p1, p2, color);
+		} else if p2.1 == p3.1 {
+			println!("Pointing down triangle");
+			self.fill_flat_triangle(p1, p2, p3, color);
+		} else {
+			println!("Non-flat triangle");
+			// generate fourth point
+			let p4 = (0 as u32, 0 as u32);
+			self.fill_flat_triangle(p1, p2, p4, color.clone());
+			self.fill_flat_triangle(p3, p2, p4, color);
 		}
 	}
 
