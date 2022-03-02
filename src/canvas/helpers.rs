@@ -8,6 +8,16 @@ pub fn sort_vectors(p1: Point, p2: Point, p3: Point) -> (Point, Point, Point) {
 	(points[0], points[1], points[2])
 }
 
+/// Calculates the intersection between the three points in the line between top and bot with the
+/// same height as mid
+pub fn calculate_intersection(top: Point, mid: Point, bot: Point) -> Point {
+	let diff_y_mid = (mid.1 - top.1) as f32;
+	let diff_y_bot = (bot.1 - top.1) as f32;
+	let diff_x = (bot.0 - top.0) as f32;
+	let x = top.0 as f32 + (diff_y_mid / diff_y_bot) * diff_x;
+	(x as u32, mid.1)
+}
+
 pub fn as_isize(point: Point) -> (isize, isize) {
 	(point.0 as isize, point.1 as isize)
 }
@@ -18,6 +28,7 @@ pub fn as_u32(point: (isize, isize)) -> Point {
 
 #[cfg(test)]
 mod tests {
+	use crate::canvas::helpers::calculate_intersection;
 	use super::sort_vectors;
 
 	#[test]
@@ -25,6 +36,11 @@ mod tests {
 		assert_eq!(((10,10), (5,5), (0,0)), sort_vectors((10,10), (5,5), (0,0)));
 		assert_eq!(((5,10), (10,5), (0,0)), sort_vectors((10,5), (5,10), (0,0)));
 		assert_eq!(((0,10), (10,5), (5,0)), sort_vectors((5,0), (10,5), (0,10)));
+	}
+
+	#[test]
+	fn calculate_intersection_test() {
+		assert_eq!(calculate_intersection((4,0), (0,2), (8,4)), (6, 2));
 	}
 
 }

@@ -7,7 +7,7 @@ use pixels::{Pixels, SurfaceTexture};
 use winit::window::Window;
 use crate::canvas::canvas_error::CanvasError;
 use crate::canvas::{Canvas, Point};
-use crate::canvas::helpers::{as_isize, as_u32, sort_vectors};
+use crate::canvas::helpers::{as_isize, as_u32, calculate_intersection, sort_vectors};
 use crate::color::*;
 
 /// Canvas to use with a [winit::window::Window]
@@ -148,15 +148,13 @@ impl Canvas for WinitCanvas {
 		let (p1, p2, p3) = sort_vectors(p1, p2, p3);
 		println!("{:?}, {:?}, {:?}", p1, p2, p3);
 		if p1.1 == p2.1 {
-			println!("Pointing up triangle");
 			self.fill_flat_triangle(p3, p1, p2, color);
 		} else if p2.1 == p3.1 {
-			println!("Pointing down triangle");
 			self.fill_flat_triangle(p1, p2, p3, color);
 		} else {
-			println!("Non-flat triangle");
 			// generate fourth point
-			let p4 = (0 as u32, 0 as u32);
+			let p4 = calculate_intersection(p3, p2, p1);
+			println!("{:?}, {:?}, {:?}, {:?}", p1, p2, p3, p4);
 			self.fill_flat_triangle(p1, p2, p4, color.clone());
 			self.fill_flat_triangle(p3, p2, p4, color);
 		}

@@ -55,11 +55,14 @@ fn main() {
                 canvas.draw_line((100, 200 - x as u32), (200 - x as u32, 100),
                 ColorBuilder::new().with_red(0).with_green(0).with_blue(255).build());
 
-                canvas.fill_triangle((200, 300), (250, 350), (300, 300), palette::GREEN);
+                //canvas.fill_triangle((200, 300), (250, 350), (300, 300), palette::BLUE);
+                //canvas.fill_triangle((400, 0), (0, 200), (600, 400), palette::GREEN);
+                canvas.fill_triangle((600, 400), (0, 200), (800, 200), palette::GREEN);
+                //canvas.fill_triangle((400, 0), (0, 200), (500, 200), palette::RED);
 
                 canvas.render().unwrap();
                 canvas.reset_frame();
-                //sleep(Duration::new(1, 0));
+                sleep(Duration::new(5, 0));
             }
             _ => (),
         }
