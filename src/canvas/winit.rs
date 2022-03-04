@@ -68,7 +68,7 @@ impl WinitCanvas {
 	/// Draws an horizontal line between two points
 	fn draw_horizontal_line(&mut self, start: Point, end: Point, color: Color) {
 		let y = start.1;
-		for x in start.0..=end.0 {
+		for x in if start.0 < end.0 { start.0..=end.0 } else { end.0..=start.0 } {
 			self.draw_pixel(x, y, color.clone());
 		}
 	}
@@ -76,7 +76,7 @@ impl WinitCanvas {
 	/// Draws a vertical line between two points
 	fn draw_vertical_line(&mut self, start: Point, end: Point, color: Color) {
 		let x = start.0;
-		for y in start.1..=end.1 {
+		for y in if start.1 < end.1 { start.1..=end.1 } else { end.1..=start.1} {
 			self.draw_pixel(x, y, color.clone());
 		}
 	}
@@ -171,16 +171,14 @@ impl Canvas for WinitCanvas {
 
 	fn fill_triangle(&mut self, p1: Point, p2: Point, p3: Point, color: Color) {
 		let (p1, p2, p3) = sort_vectors(p1, p2, p3);
-		println!("{:?}, {:?}, {:?}", p1, p2, p3);
-		if p1.1 == p2.1 {
-			self.fill_flat_triangle(p3, p1, p2, color);
-		} else if p2.1 == p3.1 {
-			self.fill_flat_triangle(p1, p2, p3, color);
-		} else {
-			// generate fourth point
-			let p4 = calculate_intersection(p3, p2, p1);
-			self.fill_flat_triangle(p1, p2, p4, color.clone());
-			self.fill_flat_triangle(p3, p2, p4, color);
+		match p2 {
+			(_, y) if y == p1.1 => self.fill_flat_triangle(p3, p1, p2, color),
+			(_, y) if y == p3.1 => self.fill_flat_triangle(p1, p2, p3, color),
+			_ => {
+				let p4 = calculate_intersection(p3, p2, p1);
+				self.fill_flat_triangle(p1, p2, p4, color.clone());
+				self.fill_flat_triangle(p3, p2, p4, color);
+			}
 		}
 	}
 

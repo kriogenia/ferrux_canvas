@@ -45,24 +45,21 @@ fn main() {
                 }
                 x += if incrementing { 1 } else { -1 };
 
+                let a = 200 - x as u32;
+
+                canvas.fill_triangle((100, 100 + x as u32), (100 + x as u32, 100),
+                                     (200 + x as u32, 200 + x as u32),
+                ColorBuilder::new().with_red(125).with_blue(150).with_green(50).build());
+
                 canvas.draw_triangle((100, 100 - x as u32), (100 - x as u32, 100),
-                                     (200 - x as u32, 200 - x as u32), palette::WHITE);
+                                     (a, a), palette::WHITE);
 
-                canvas.draw_line((200 - x as u32, 100), (200 - x as u32, 200 - x as u32),
-                                 palette::RED);
-                canvas.draw_line((200 - x as u32, 200 - x as u32), (100, 200 - x as u32),
-                                 Color::from_rgba("00ff00ff").unwrap());
-                canvas.draw_line((100, 200 - x as u32), (200 - x as u32, 100),
-                ColorBuilder::new().with_red(0).with_green(0).with_blue(255).build());
-
-                canvas.fill_triangle((200, 300), (250, 350), (300, 300), palette::BLUE);
-                canvas.fill_triangle((400, 0), (0, 200), (500, 200), palette::RED);
-                //canvas.fill_triangle((600, 400), (0, 200), (800, 200), palette::GREEN);
-                canvas.fill_triangle((400, 0), (0, 200), (600, 400), palette::GREEN);
+                canvas.draw_line((a, 100), (a, a), palette::RED);
+                canvas.draw_line((a, a), (100, a), palette::BLUE);
+                canvas.draw_line((100, a), (a, 100), palette::GREEN);
 
                 canvas.render().unwrap();
                 canvas.reset_frame();
-                sleep(Duration::new(5, 0));
             }
             _ => (),
         }
