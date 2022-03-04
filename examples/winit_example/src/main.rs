@@ -1,12 +1,10 @@
-use std::thread::sleep;
-use std::time::Duration;
 use winit::dpi::LogicalSize;
 use winit::event::{Event, WindowEvent};
 use winit::event_loop::{ControlFlow, EventLoop};
 use winit::window::WindowBuilder;
 use ferrux_canvas::canvas::Canvas;
 use ferrux_canvas::canvas::winit::WinitCanvas;
-use ferrux_canvas::color::{Color, ColorBuilder, palette};
+use ferrux_canvas::color::{ColorBuilder, palette};
 
 fn main() {
     println!("FerruX Canvas demo");

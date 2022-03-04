@@ -44,7 +44,9 @@ event_loop.run(move |event, _, control_flow| {
        }
        x += if incrementing { 1 } else { -1 };
        canvas.draw_triangle((100, (100 - x) as u32), (100 - x as u32, 100), 
-          (200 - x as u32, 200 - x as u32), palette::WHITE);
+         (200 - x as u32, 200 - x as u32), palette::WHITE);
+       canvas.fill_triangle((100, (100 - x) as u32), (100 - x as u32, 100),
+         (200 - x as u32, 200 - x as u32), Color::from_rgba("2303b0dd"));
        canvas.render().unwrap();
        canvas.reset_frame();
      }
