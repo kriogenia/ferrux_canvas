@@ -23,8 +23,9 @@ optimize = ["log/release_max_level_warn"]
 default = ["optimize"]
 
 [dependencies]
-bresenham = "0.1.1"
+bresenham_zip = "0.1.0"
 env_logger = "0.9"
+line_drawing = "1.0.0"
 log = "0.4"
 pixels = "0.9"
 regex = "1.5.4"

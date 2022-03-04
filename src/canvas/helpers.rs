@@ -18,7 +18,7 @@ pub fn calculate_intersection(top: Point, mid: Point, bot: Point) -> Point {
 	(x as u32, mid.1)
 }
 
-pub fn as_isize(point: Point) -> (isize, isize) {
+pub fn as_signed(point: Point) -> (isize, isize) {
 	(point.0 as isize, point.1 as isize)
 }
 

@@ -1,13 +1,14 @@
 //! Tools of the library to work with [winit]
 
 use std::fmt::{Debug, Formatter};
-use bresenham::Bresenham;
+use bresenham_zip::bresenham::BresenhamZipY;
+use line_drawing::Bresenham;
 use log::{error, info};
 use pixels::{Pixels, SurfaceTexture};
 use winit::window::Window;
 use crate::canvas::canvas_error::CanvasError;
 use crate::canvas::{Canvas, Point};
-use crate::canvas::helpers::{as_isize, as_u32, calculate_intersection, sort_vectors};
+use crate::canvas::helpers::{as_signed, as_u32, calculate_intersection, sort_vectors};
 use crate::color::*;
 
 /// Canvas to use with a [winit::window::Window]
@@ -67,8 +68,8 @@ impl WinitCanvas {
 	/// Fills the flat triangle (a triangle were two points share the same height) made with the three
 	/// passed points using Bresenham
 	fn fill_flat_triangle(&mut self, peak: Point, side_a: Point, side_b: Point, color: Color) {
-		for (left, right) in Bresenham::new(as_isize(peak), as_isize(side_a))
-			.zip(Bresenham::new(as_isize(peak), as_isize(side_b))) {
+		let bresenham = BresenhamZipY::new(as_signed(peak), as_signed(side_a), as_signed(side_b));
+		for (left, right) in bresenham.unwrap() {
 			self.draw_line(as_u32(left), as_u32(right), color.clone());
 		}
 	}
@@ -132,8 +133,7 @@ impl Canvas for WinitCanvas {
 	}
 
 	fn draw_line(&mut self, start: Point, end: Point, color: Color) {
-		for (x, y) in Bresenham::new(
-			(start.0 as isize, start.1 as isize), (end.0 as isize, end.1 as isize)) {
+		for (x, y) in Bresenham::new(as_signed(start),as_signed(end)) {
 			self.draw_pixel(x as u32, y as u32, color.clone());
 		}
 	}
