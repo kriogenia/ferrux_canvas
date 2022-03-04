@@ -65,6 +65,21 @@ impl WinitCanvas {
 		})
 	}
 
+	/// Draws an horizontal line between two points
+	fn draw_horizontal_line(&mut self, start: Point, end: Point, color: Color) {
+		let y = start.1;
+		for x in start.0..=end.0 {
+			self.draw_pixel(x, y, color.clone());
+		}
+	}
+
+	/// Draws a diagonal line between two points using Bresenham's algorithm
+	fn draw_diagonal_line(&mut self, start: Point, end: Point, color: Color) {
+		for (x, y) in Bresenham::new(as_signed(start),as_signed(end)) {
+			self.draw_pixel(x as u32, y as u32, color.clone());
+		}
+	}
+
 	/// Fills the flat triangle (a triangle were two points share the same height) made with the three
 	/// passed points using Bresenham
 	fn fill_flat_triangle(&mut self, peak: Point, side_a: Point, side_b: Point, color: Color) {
@@ -133,8 +148,10 @@ impl Canvas for WinitCanvas {
 	}
 
 	fn draw_line(&mut self, start: Point, end: Point, color: Color) {
-		for (x, y) in Bresenham::new(as_signed(start),as_signed(end)) {
-			self.draw_pixel(x as u32, y as u32, color.clone());
+		if start.1 == end.1 {
+			self.draw_horizontal_line(start, end, color);
+		} else {
+			self.draw_diagonal_line(start, end, color);
 		}
 	}
 
@@ -154,7 +171,6 @@ impl Canvas for WinitCanvas {
 		} else {
 			// generate fourth point
 			let p4 = calculate_intersection(p3, p2, p1);
-			println!("{:?}, {:?}, {:?}, {:?}", p1, p2, p3, p4);
 			self.fill_flat_triangle(p1, p2, p4, color.clone());
 			self.fill_flat_triangle(p3, p2, p4, color);
 		}
