@@ -73,6 +73,14 @@ impl WinitCanvas {
 		}
 	}
 
+	/// Draws a vertical line between two points
+	fn draw_vertical_line(&mut self, start: Point, end: Point, color: Color) {
+		let x = start.0;
+		for y in start.1..=end.1 {
+			self.draw_pixel(x, y, color.clone());
+		}
+	}
+
 	/// Draws a diagonal line between two points using Bresenham's algorithm
 	fn draw_diagonal_line(&mut self, start: Point, end: Point, color: Color) {
 		for (x, y) in Bresenham::new(as_signed(start),as_signed(end)) {
@@ -148,10 +156,10 @@ impl Canvas for WinitCanvas {
 	}
 
 	fn draw_line(&mut self, start: Point, end: Point, color: Color) {
-		if start.1 == end.1 {
-			self.draw_horizontal_line(start, end, color);
-		} else {
-			self.draw_diagonal_line(start, end, color);
+		match start {
+			(x, _) if x == end.0 => self.draw_vertical_line(start, end, color),
+			(_, y) if y == end.1 => self.draw_horizontal_line(start, end, color),
+			_ => self.draw_diagonal_line(start, end, color)
 		}
 	}
 
