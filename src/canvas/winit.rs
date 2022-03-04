@@ -1,12 +1,14 @@
 //! Tools of the library to work with [winit]
 
 use std::fmt::{Debug, Formatter};
-use bresenham::Bresenham;
+use bresenham_zip::bresenham::BresenhamZipY;
+use line_drawing::Bresenham;
 use log::{error, info};
 use pixels::{Pixels, SurfaceTexture};
 use winit::window::Window;
 use crate::canvas::canvas_error::CanvasError;
 use crate::canvas::{Canvas, Point};
+use crate::canvas::helpers::{as_signed, as_u32, calculate_intersection, sort_vectors};
 use crate::color::*;
 
 /// Canvas to use with a [winit::window::Window]
@@ -62,6 +64,39 @@ impl WinitCanvas {
 			height,
 		})
 	}
+
+	/// Draws an horizontal line between two points
+	fn draw_horizontal_line(&mut self, start: Point, end: Point, color: Color) {
+		let y = start.1;
+		for x in if start.0 < end.0 { start.0..=end.0 } else { end.0..=start.0 } {
+			self.draw_pixel(x, y, color.clone());
+		}
+	}
+
+	/// Draws a vertical line between two points
+	fn draw_vertical_line(&mut self, start: Point, end: Point, color: Color) {
+		let x = start.0;
+		for y in if start.1 < end.1 { start.1..=end.1 } else { end.1..=start.1} {
+			self.draw_pixel(x, y, color.clone());
+		}
+	}
+
+	/// Draws a diagonal line between two points using Bresenham's algorithm
+	fn draw_diagonal_line(&mut self, start: Point, end: Point, color: Color) {
+		for (x, y) in Bresenham::new(as_signed(start),as_signed(end)) {
+			self.draw_pixel(x as u32, y as u32, color.clone());
+		}
+	}
+
+	/// Fills the flat triangle (a triangle were two points share the same height) made with the three
+	/// passed points using Bresenham
+	fn fill_flat_triangle(&mut self, peak: Point, side_a: Point, side_b: Point, color: Color) {
+		let bresenham = BresenhamZipY::new(as_signed(peak), as_signed(side_a), as_signed(side_b));
+		for (left, right) in bresenham.unwrap() {
+			self.draw_line(as_u32(left), as_u32(right), color.clone());
+		}
+	}
+
 }
 
 impl Canvas for WinitCanvas {
@@ -121,9 +156,10 @@ impl Canvas for WinitCanvas {
 	}
 
 	fn draw_line(&mut self, start: Point, end: Point, color: Color) {
-		for (x, y) in Bresenham::new(
-			(start.0 as isize, start.1 as isize), (end.0 as isize, end.1 as isize)) {
-			self.draw_pixel(x as u32, y as u32, color.clone());
+		match start {
+			(x, _) if x == end.0 => self.draw_vertical_line(start, end, color),
+			(_, y) if y == end.1 => self.draw_horizontal_line(start, end, color),
+			_ => self.draw_diagonal_line(start, end, color)
 		}
 	}
 
@@ -131,6 +167,19 @@ impl Canvas for WinitCanvas {
 		self.draw_line(point_a, point_b, color.clone());
 		self.draw_line(point_b, point_c, color.clone());
 		self.draw_line(point_c, point_a, color);
+	}
+
+	fn fill_triangle(&mut self, p1: Point, p2: Point, p3: Point, color: Color) {
+		let (p1, p2, p3) = sort_vectors(p1, p2, p3);
+		match p2 {
+			(_, y) if y == p1.1 => self.fill_flat_triangle(p3, p1, p2, color),
+			(_, y) if y == p3.1 => self.fill_flat_triangle(p1, p2, p3, color),
+			_ => {
+				let p4 = calculate_intersection(p3, p2, p1);
+				self.fill_flat_triangle(p1, p2, p4, color.clone());
+				self.fill_flat_triangle(p3, p2, p4, color);
+			}
+		}
 	}
 
 	fn clear_frame(&mut self) -> Result<(), CanvasError> {

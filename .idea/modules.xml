@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ferruxe-canvas.iml" filepath="$PROJECT_DIR$/.idea/ferruxe-canvas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ferrux-canvas.iml" filepath="$PROJECT_DIR$/.idea/ferrux-canvas.iml" />
     </modules>
   </component>
 </project>

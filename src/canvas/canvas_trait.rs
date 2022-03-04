@@ -44,6 +44,10 @@ pub trait Canvas {
 
 	/// Draws a single pixel on the buffer, ready to be printed in the next [Canvas::render] call.
 	///
+	/// # Arguments
+	/// * `x`, `y` - Pixel coordinates of the point
+	/// * `color` - Color of the pixel
+	///
 	/// # Example
 	/// The pixel (100, 100) will be drawn blue on the screen with the next render call.
 	/// ```no_run
@@ -61,6 +65,7 @@ pub trait Canvas {
 	/// # Arguments
 	/// * `start` - Starting point
 	/// * `end` - Ending point
+	/// * `color` - Color of the line
 	///
 	/// # Example
 	/// The line between the pixels (100, 100) and (200, 200) will be drawn on the screen in red with 
@@ -78,7 +83,8 @@ pub trait Canvas {
 	/// Draws the three lines compounding a triangle in the canvas
 	///
 	/// # Arguments
-	/// `triangle` - 2D Triangle to draw
+	/// * `triangle` - 2D Triangle to draw
+	/// * `color` - Color to of the lines
 	///
 	/// # Example
 	/// The triangle between the pixels (100, 100), (100, 150) and (150, 100) will be drawn green on 
@@ -92,6 +98,23 @@ pub trait Canvas {
 	/// ```
 	///
 	fn draw_triangle(&mut self, point_a: Point, point_b: Point, point_c: Point, color: Color);
+
+	/// Draws and fills the triangle conformed by the three indicated points
+	///
+	/// # Arguments
+	/// * `point_a`, `point_b`, `point_c` - Points of the triangle
+	/// * `color` - Color to fill the triangle
+	///
+	/// # Example
+	/// ```no_run
+	/// # use ferrux_canvas::canvas::Canvas;
+	/// # use ferrux_canvas::color::palette;
+	/// # let window = winit::window::Window::new(&winit::event_loop::EventLoop::new()).unwrap();
+	/// # let mut canvas = ferrux_canvas::canvas::winit::WinitCanvas::new(&window).unwrap();
+	/// canvas.fill_triangle((100, 100), (100, 150), (150, 100), palette::WHITE);
+	/// ```
+	///
+	fn fill_triangle(&mut self, point_a: Point, point_b: Point, point_c: Point, color: Color);
 
 	/// Renders an empty frame. It mimics a call to [Canvas::render] after a [Canvas::reset_frame] but
 	/// it doesn't clear the buffer. Allowing to clear the screen without losing the current drawn

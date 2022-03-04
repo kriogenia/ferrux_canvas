@@ -82,10 +82,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0d8c1fef690941d3e7788d328517591fecc684c084084702d6ff1641e993699a"
 
 [[package]]
-name = "bresenham"
-version = "0.1.1"
+name = "bresenham_zip"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bfc1116225f66d2ea341a26503f83a6b1205070a6f7199ce1f1550ead91f6fd7"
+checksum = "b7aeeb65ea8c44f6cd724a32c180ff40358730f006562c1c5eb5116ea2d48152"
+dependencies = [
+ "line_drawing",
+]
 
 [[package]]
 name = "bumpalo"
@@ -356,10 +359,11 @@ dependencies = [
 
 [[package]]
 name = "ferrux_canvas"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
- "bresenham",
+ "bresenham_zip",
  "env_logger",
+ "line_drawing",
  "log",
  "pixels",
  "regex",
@@ -567,6 +571,15 @@ checksum = "efbc0f03f9a775e9f6aed295c6a1ba2253c5757a9e03d55c6caa46a681abcddd"
 dependencies = [
  "cfg-if 1.0.0",
  "winapi",
+]
+
+[[package]]
+name = "line_drawing"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3d1478a313008a3e6c8149995e90a99ee9094034b5c5c3da1eeb81183cb61d1d"
+dependencies = [
+ "num-traits",
 ]
 
 [[package]]
