@@ -11,9 +11,9 @@ pub fn sort_vectors(p1: Point, p2: Point, p3: Point) -> (Point, Point, Point) {
 /// Calculates the intersection between the three points in the line between top and bot with the
 /// same height as mid
 pub fn calculate_intersection(top: Point, mid: Point, bot: Point) -> Point {
-	let diff_y_mid = (mid.1 - top.1) as f32;
-	let diff_y_bot = (bot.1 - top.1) as f32;
-	let diff_x = (bot.0 - top.0) as f32;
+	let diff_y_mid = mid.1 as f32 - top.1 as f32;
+	let diff_y_bot = bot.1 as f32 - top.1 as f32;
+	let diff_x = bot.0 as f32 - top.0 as f32;
 	let x = top.0 as f32 + (diff_y_mid / diff_y_bot) * diff_x;
 	(x as u32, mid.1)
 }
@@ -41,6 +41,11 @@ mod tests {
 	#[test]
 	fn calculate_intersection_test() {
 		assert_eq!(calculate_intersection((4,0), (0,2), (8,4)), (6, 2));
+	}
+
+	#[test]
+	fn intersection_bot_left_of_top() {
+		assert_eq!(calculate_intersection((4,0), (0,2), (0, 4)), (2, 2));
 	}
 
 }
