@@ -1,7 +1,7 @@
 //! Tools of the library to work with [winit]
 
 use std::fmt::{Debug, Formatter};
-use bresenham_zip::bresenham::BresenhamZipY;
+use bresenham_zip::build_zip;
 use line_drawing::Bresenham;
 use log::{error, info};
 use pixels::{Pixels, SurfaceTexture};
@@ -91,7 +91,8 @@ impl WinitCanvas {
 	/// Fills the flat triangle (a triangle were two points share the same height) made with the three
 	/// passed points using Bresenham
 	fn fill_flat_triangle(&mut self, peak: Point, side_a: Point, side_b: Point, color: Color) {
-		let bresenham = BresenhamZipY::new(as_signed(peak), as_signed(side_a), as_signed(side_b));
+		#![allow(unused_parens)]
+		let bresenham = build_zip!(2D:Y - (as_signed(peak)) -> (as_signed(side_a)), (as_signed(side_b)));
 		for (left, right) in bresenham.unwrap() {
 			self.draw_line(as_u32(left), as_u32(right), color.clone());
 		}

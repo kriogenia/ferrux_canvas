@@ -83,9 +83,9 @@ checksum = "0d8c1fef690941d3e7788d328517591fecc684c084084702d6ff1641e993699a"
 
 [[package]]
 name = "bresenham_zip"
-version = "0.1.0"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b7aeeb65ea8c44f6cd724a32c180ff40358730f006562c1c5eb5116ea2d48152"
+checksum = "cfdd9130a31bba15b25219c95340a36203ace53f78b8a68cf52ca01eee9168be"
 dependencies = [
  "line_drawing",
 ]
