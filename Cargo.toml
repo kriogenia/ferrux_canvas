@@ -28,7 +28,7 @@ env_logger = "0.9"
 line_drawing = "1.0.0"
 log = "0.4"
 pixels = "0.9"
-regex = "1.5.4"
+regex = "1.5.5"
 winit = "0.26"
 
 [workspace]
